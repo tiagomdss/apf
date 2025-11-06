@@ -80,7 +80,3 @@ Após a instalação, você pode:
 - O hot-reload está ativo - suas mudanças aparecem automaticamente
 - Verifique o console do navegador para debug
 - Use o Nuxt DevTools (abre automaticamente no navegador)
-
----
-
-**Pronto!** Seu Dashboard APF está funcionando. 🎉

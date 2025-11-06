@@ -3,8 +3,8 @@
     <!-- Navbar Superior -->
     <AppNavbar />
 
-    <!-- Conteúdo Principal -->
-    <main class="flex-1">
+    <!-- Conteúdo Principal com Transição -->
+    <main class="flex-1 relative overflow-hidden">
       <slot />
     </main>
 
@@ -16,3 +16,4 @@
 <script setup lang="ts">
 // Layout padrão com navbar superior e rodapé
 </script>
+

@@ -3,13 +3,17 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   
+  css: ['@/assets/global.css'],
+
   modules: [
     '@nuxtjs/tailwindcss',
-    '@nuxt/icon'
+    '@nuxt/icon',
+    '@vueuse/nuxt'
   ],
 
   app: {
     head: {
+      htmlAttrs: { class: 'dark' },
       title: 'Dashboard APF - Análise de Pontos de Função',
       meta: [
         { charset: 'utf-8' },
@@ -22,7 +26,11 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap' }
       ]
-    }
+    },
+    // pageTransition: {
+    //   name: 'slide',
+    //   mode: 'out-in'
+    // }
   },
 
   tailwindcss: {

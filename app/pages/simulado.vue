@@ -122,6 +122,32 @@
         </div>
       </div>
 
+      <!-- Modal de Confirmação de Saída -->
+      <Transition name="fade">
+        <div v-if="showExitModal" class="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 dark:bg-black/70">
+          <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6 md:p-8 max-w-md w-full mx-4 border border-gray-200 dark:border-gray-700">
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Sair do Simulado?</h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-6">
+              Você está no meio de um simulado. Se sair agora, o simulado será reiniciado e todo o progresso será perdido.
+            </p>
+            <div class="flex gap-3 justify-end">
+              <button
+                @click="cancelExit"
+                class="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
+              >
+                Não, continuar
+              </button>
+              <button
+                @click="confirmExit"
+                class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+              >
+                Sim, sair
+              </button>
+            </div>
+          </div>
+        </div>
+      </Transition>
+
     </div>
   </div>
 </template>
@@ -308,14 +334,20 @@ const questionBank = {
   ]
 }
 
+const router = useRouter()
+const route = useRoute()
+
 const currentScreen = ref('start')
 const quizQuestions = ref<Question[]>([])
 const userAnswers = ref<(number | null)[]>([])
 const currentQuestionIndex = ref(0)
 const score = ref(0)
+const showExitModal = ref(false)
+const pendingNavigation = ref<string | null>(null)
 
 const currentQuestion = computed(() => quizQuestions.value[currentQuestionIndex.value] || {})
 const scorePercentage = computed(() => ((score.value / quizQuestions.value.length) * 100).toFixed(1))
+const isQuizInProgress = computed(() => currentScreen.value === 'quiz')
 
 function shuffleArray<T>(array: T[]): T[] {
   const newArray = [...array]
@@ -388,6 +420,71 @@ function showReview() {
 function backToResults() {
   currentScreen.value = 'results'
 }
+
+// Proteção contra saída durante o quiz
+function handleNavigation(to: string) {
+  if (isQuizInProgress.value) {
+    showExitModal.value = true
+    pendingNavigation.value = to
+    return false
+  }
+  return true
+}
+
+function cancelExit() {
+  showExitModal.value = false
+  pendingNavigation.value = null
+}
+
+function confirmExit() {
+  // Reinicia o simulado
+  currentScreen.value = 'start'
+  quizQuestions.value = []
+  userAnswers.value = []
+  currentQuestionIndex.value = 0
+  score.value = 0
+  
+  showExitModal.value = false
+  
+  // Navega para a rota pendente
+  if (pendingNavigation.value) {
+    router.push(pendingNavigation.value)
+    pendingNavigation.value = null
+  }
+}
+
+// Intercepta navegação durante o quiz
+router.beforeEach((to, from) => {
+  if (from.path === '/simulado' && isQuizInProgress.value && to.path !== '/simulado') {
+    handleNavigation(to.path)
+    return false
+  }
+  return true
+})
+
+// Intercepta cliques nos links do menu
+onMounted(() => {
+  if (process.client) {
+    // Intercepta cliques em links do navbar
+    const handleLinkClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      const link = target.closest('a[href]') as HTMLAnchorElement
+      
+      if (link && link.getAttribute('href')?.startsWith('/') && link.getAttribute('href') !== '/simulado') {
+        if (isQuizInProgress.value) {
+          e.preventDefault()
+          handleNavigation(link.getAttribute('href') || '')
+        }
+      }
+    }
+    
+    document.addEventListener('click', handleLinkClick)
+    
+    onUnmounted(() => {
+      document.removeEventListener('click', handleLinkClick)
+    })
+  }
+})
 </script>
 
 <style scoped>
@@ -397,5 +494,15 @@ function backToResults() {
 .option-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

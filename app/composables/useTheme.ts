@@ -1,5 +1,5 @@
 export const useTheme = () => {
-  const isDark = useState('theme-dark', () => false)
+  const isDark = useState('theme-dark', () => true)
 
   const toggleTheme = () => {
     isDark.value = !isDark.value
@@ -14,7 +14,8 @@ export const useTheme = () => {
       const savedTheme = localStorage.getItem('theme')
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
       
-      isDark.value = savedTheme === 'dark' || (!savedTheme && prefersDark)
+      // Padrão: escuro. Só usa claro se salvo explicitamente como 'light'.
+      isDark.value = savedTheme ? (savedTheme === 'dark') : true
       updateDOM()
     }
   }

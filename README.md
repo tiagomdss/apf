@@ -1,5 +1,7 @@
 # Dashboard APF - Análise de Pontos de Função
 
+> Documentação consolidada em um único arquivo: veja `DOCUMENTACAO.md`.
+
 Dashboard interativo completo para **Análise de Pontos de Função (APF)**, desenvolvido com Nuxt 4, TypeScript e Tailwind CSS. Ferramenta moderna e bem documentada para medição, estimativa e gestão de projetos de software usando a metodologia padronizada de Pontos de Função.
 
 ## 🎯 Sobre o Projeto
@@ -30,7 +32,7 @@ AFPNuxt4/
 ├── app/
 │   ├── assets/
 │   │   └── css/
-│   │       └── main.css          # Estilos globais e classes utilitárias
+│   │       └── main.css          # Estilos globais (arquivo único)
 │   ├── components/
 │   │   ├── AppNavbar.vue         # Navbar superior com menu responsivo
 │   │   └── AppFooter.vue         # Rodapé com informações e links
@@ -52,7 +54,8 @@ AFPNuxt4/
 ├── package.json                  # Dependências do projeto
 ├── tailwind.config.ts            # Configuração do Tailwind CSS
 ├── tsconfig.json                 # Configuração do TypeScript
-└── README.md                     # Este arquivo
+├── DOCUMENTACAO.md               # Documentação consolidada
+└── README.md                     # Este arquivo (visão geral)
 ```
 
 ## 🛠️ Instalação e Configuração
