@@ -27,10 +27,10 @@ export default defineNuxtConfig({
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap' }
       ]
     },
-    // pageTransition: {
-    //   name: 'slide',
-    //   mode: 'out-in'
-    // }
+    pageTransition: {
+      name: 'slide',
+      mode: 'out-in'
+    }
   },
 
   tailwindcss: {

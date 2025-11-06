@@ -4,8 +4,10 @@
     <AppNavbar />
 
     <!-- Conteúdo Principal com Transição -->
-    <main class="flex-1 relative overflow-hidden">
-      <slot />
+    <main class="flex-1 relative">
+      <div class="container mx-auto px-4 py-8">
+        <slot />
+      </div>
     </main>
 
     <!-- Rodapé -->

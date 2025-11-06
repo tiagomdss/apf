@@ -55,32 +55,24 @@
   }
 }
 
-/* Transição de páginas - slide da esquerda para direita */
-.slide-enter-active {
-  transition: transform 0.3s ease-in-out;
-}
-
+/* Transição de páginas - fade com deslize suave */
+.slide-enter-active,
 .slide-leave-active {
-  transition: transform 0.3s ease-in-out;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
+  transition: all 0.3s ease-in-out;
 }
 
 .slide-enter-from {
-  transform: translateX(100%);
-}
-
-.slide-enter-to {
-  transform: translateX(0);
-}
-
-.slide-leave-from {
-  transform: translateX(0);
+  opacity: 0;
+  transform: translateX(20px);
 }
 
 .slide-leave-to {
-  transform: translateX(-100%);
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  opacity: 1;
+  transform: translateX(0);
 }
